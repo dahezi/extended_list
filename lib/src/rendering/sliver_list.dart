@@ -392,7 +392,7 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
 
     //fix hittest
     if (closeToTrailing) {
-      paintExtent += closeToTrailingDistance;
+      // paintExtent += closeToTrailingDistance;
     }
 
     geometry = SliverGeometry(

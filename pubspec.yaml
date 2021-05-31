@@ -8,9 +8,12 @@ environment:
   flutter: ">=2.0.0"
 
 dependencies:
-  extended_list_library: ^3.0.0
   flutter:
     sdk: flutter
+  extended_list_library:
+    git:
+      url: https://github.com/dahezi/extended_list_library.git
+      ref: master
 
 
 dev_dependencies:
