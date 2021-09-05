@@ -14,6 +14,7 @@ import 'pages/main_page.dart';
 FFRouteSettings getRouteSettings({
   required String name,
   Map<String, dynamic>? arguments,
+  Widget? notFoundWidget,
 }) {
   final Map<String, dynamic> safeArguments =
       arguments ?? const <String, dynamic>{};
