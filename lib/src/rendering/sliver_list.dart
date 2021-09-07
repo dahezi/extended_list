@@ -58,6 +58,12 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
     _extendedListDelegate = value;
   }
 
+  // @override
+  // void paint(PaintingContext context, Offset offset) {
+  //   super.paint(context, offset);
+  //   print('paint!! scrollOffset $offset');
+  // }
+
   @override
   void performLayout() {
     childManager.didStartLayout();
@@ -65,6 +71,7 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
 
     final double scrollOffset =
         constraints.scrollOffset + constraints.cacheOrigin;
+    print("performLayout scrollOffset $scrollOffset");
     assert(scrollOffset >= 0.0);
     final double remainingExtent = constraints.remainingCacheExtent;
     assert(remainingExtent >= 0.0);
@@ -151,7 +158,6 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
         final SliverMultiBoxAdaptorParentData childParentData =
             firstChild!.parentData as SliverMultiBoxAdaptorParentData;
         childParentData.layoutOffset = 0.0;
-
         if (scrollOffset == 0.0) {
           // insertAndLayoutLeadingChild only lays out the children before
           // firstChild. In this case, nothing has been laid out. We have
@@ -343,9 +349,8 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
     double estimatedMaxScrollOffset;
 
     //zmt
-    endScrollOffset =
-        handleCloseToTrailingEnd(closeToTrailing, endScrollOffset);
-
+    endScrollOffset = handleCloseToTrailingEnd(closeToTrailing, endScrollOffset);
+    print("SliverGeometry  ========sliver_list== $reachedEnd  ========endScrollOffset==========  $endScrollOffset");
     if (reachedEnd) {
       ///zmt
       final LastChildLayoutType layoutType = extendedListDelegate
@@ -359,6 +364,7 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
         final SliverMultiBoxAdaptorParentData childParentData =
             lastChild!.parentData as SliverMultiBoxAdaptorParentData;
         childParentData.layoutOffset = constraints.remainingPaintExtent - size;
+        // print("childParentData.layoutOffset==========  ${childParentData.layoutOffset}");
         endScrollOffset = constraints.remainingPaintExtent;
       }
       estimatedMaxScrollOffset = endScrollOffset;
@@ -373,7 +379,7 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
       assert(estimatedMaxScrollOffset >=
           endScrollOffset - childScrollOffset(firstChild!)!);
     }
-
+    print("SliverGeometry  ========sliver_list==========estimatedMaxScrollOffset==========  $estimatedMaxScrollOffset");
     final double firstChildScrollOffset = childScrollOffset(firstChild!)!;
     double paintExtent = calculatePaintOffset(
       constraints,
@@ -385,14 +391,16 @@ class ExtendedRenderSliverList extends RenderSliverMultiBoxAdaptor
       from: firstChildScrollOffset,
       to: endScrollOffset,
     );
-    final double targetEndScrollOffsetForPaint =
-        constraints.scrollOffset + constraints.remainingPaintExtent;
+
+    final double targetEndScrollOffsetForPaint = constraints.scrollOffset + constraints.remainingPaintExtent;
+    print("SliverGeometry  ========sliver_list==========${constraints.scrollOffset}==========  ${constraints.remainingPaintExtent}");
+    print("SliverGeometry  ========sliver_list==========targetEndScrollOffsetForPaint==========  $targetEndScrollOffsetForPaint");
 
     callViewportBuilder(viewportBuilder: extendedListDelegate.viewportBuilder);
 
     //fix hittest
     if (closeToTrailing) {
-      // paintExtent += closeToTrailingDistance;
+      paintExtent += closeToTrailingDistance;
     }
 
     geometry = SliverGeometry(
